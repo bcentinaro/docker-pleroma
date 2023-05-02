@@ -33,7 +33,6 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
       - name: ECR Image
         id: build-image
-        if: ${{ github.event_name == 'push' }}
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: pleroma
@@ -49,4 +48,5 @@ jobs:
           --build-arg DB_PASS=$DB_PASS --build-arg DB_HOST=$DB_HOST --build-arg DB_USER=$DB_USER --build-arg DB_NAME=DB_NAME \
           --build-arg UID=1000 --build-arg GID=1000 \
           .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
