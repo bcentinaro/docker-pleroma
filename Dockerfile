@@ -3,6 +3,14 @@ FROM elixir:1.14-alpine
 ARG PLEROMA_VER=develop
 ARG UID=911
 ARG GID=911
+ARG DB_PASS=postgres
+ENV DB_PASS=${DB_PASS}
+ARG DB_USER=postgres
+ENV DB_USER=${DB_USER}
+ARG DB_NAME=postgres
+ENV DB_NAME=${DB_NAME}
+ARG DB_HOST=db
+ENV DB_HOST=${DB_HOST}
 ENV MIX_ENV=prod
 
 RUN echo "http://nl.alpinelinux.org/alpine/latest-stable/main" >> /etc/apk/repositories \
