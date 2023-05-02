@@ -26,6 +26,16 @@ config :pleroma, Pleroma.Repo,
   hostname: System.get_env("DB_HOST", "db"),
   pool_size: 10
 
+config :pleroma, Pleroma.Upload,
+  uploader: Pleroma.Uploaders.S3,
+  strip_exif: true
+
+config :ex_aws, :s3,
+  access_key_id: System.get_env("AWS_ACCESS_KEY_ID", "pleroma"),
+  secret_access_key: System.get_env("AWS_SECRET_ACCESS_KEY", "pleroma"),
+  region: "us-east-1",
+  scheme: "https://"
+
 # Configure web push notifications
 config :web_push_encryption, :vapid_details, subject: "mailto:#{System.get_env("NOTIFY_EMAIL")}"
 
