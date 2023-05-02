@@ -31,6 +31,8 @@ config :pleroma, Pleroma.Upload,
   strip_exif: true,
   base_url: System.fetch_env!("MEDIA_URL")
 
+config :pleroma, :configurable_from_database, true
+
 config :pleroma, Pleroma.Uploaders.S3,
   bucket: System.fetch_env!("DOMAIN"),
   bucket_namespace: "media"
