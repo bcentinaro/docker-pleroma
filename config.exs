@@ -35,7 +35,7 @@ config :pleroma, :configurable_from_database, true
 
 config :pleroma, Pleroma.Uploaders.S3,
   bucket: System.fetch_env!("DOMAIN"),
-  bucket_namespace: "media"
+  bucket_namespace: "media",
   public_endpoint: "https://s3.us-east-1.amazonaws.com"
 
 config :ex_aws, :s3,
