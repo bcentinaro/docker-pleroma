@@ -29,7 +29,7 @@ config :pleroma, Pleroma.Repo,
 config :pleroma, Pleroma.Upload,
   uploader: Pleroma.Uploaders.S3,
   strip_exif: true,
-  base_url: "#{System.fetch_env!("DOMAIN")}/media"
+  base_url: System.fetch_env!("MEDIA_URL")
 
 config :pleroma, Pleroma.Uploaders.S3,
   bucket: System.fetch_env!("DOMAIN"),
