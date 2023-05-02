@@ -14,7 +14,7 @@ config :pleroma, :instance,
   healthcheck: true
 
 config :pleroma, :media_proxy,
-  enabled: true,
+  enabled: false,
   redirect_on_failure: true,
   base_url: System.get_env("MEDIA_DOMAIN", "localhost")
 
@@ -28,10 +28,12 @@ config :pleroma, Pleroma.Repo,
 
 config :pleroma, Pleroma.Upload,
   uploader: Pleroma.Uploaders.S3,
-  strip_exif: true
+  strip_exif: true,
+  base_url: "#{System.fetch_env!("DOMAIN")}/media"
 
 config :pleroma, Pleroma.Uploaders.S3,
   bucket: System.fetch_env!("DOMAIN"),
+  bucket_namespace: "media"
   public_endpoint: "https://s3.us-east-1.amazonaws.com"
 
 config :ex_aws, :s3,
