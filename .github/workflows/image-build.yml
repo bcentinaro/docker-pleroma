@@ -1,0 +1,56 @@
+name: Docker Image
+
+on:
+  workflow_dispatch:
+    inputs:
+        version:
+          description: 'Version to Build'
+          required: true
+  push:
+  release:
+    types:
+      - created
+
+jobs:
+  build: 
+    runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.build-image.outputs.image }}
+      release: ${{ steps.build-release.outputs.image }}
+      hotfix: ${{ steps.build-hotfix.outputs.image }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with: 
+          path: pleroma
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      - name: ECR Image
+        id: build-image
+        if: ${{ github.event_name == 'push' }}
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: pleroma
+          DB_PASS: ${{ secrets.DB_PASS }
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DOMAIN: ${{ secrets.DOMAIN }}
+          MEDIA_DOMAIN: ${{ secrets.MEDIA_DOMAIN }}
+          IMAGE_TAG: latest
+
+
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f ./pleroma/Dockerfile \
+          --build-arg DB_PASS=$DB_PASS --build-arg DB_HOST=$DB_HOST --build-arg DB_USER=$DB_USER --build-arg DB_NAME=DB_NAME \
+          --build-arg UID=1000 --build-arg GID=1000 \
+          .
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"

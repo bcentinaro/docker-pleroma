@@ -1,7 +1,7 @@
 import Config
 
 config :pleroma, Pleroma.Web.Endpoint,
-  url: [host: System.get_env("DOMAIN", "localhost"), scheme: "https", port: 443],
+  url: [host: System.get_env("DOMAIN", "localhost"), scheme: "http", port: 4000],
   http: [ip: {0, 0, 0, 0}, port: 4000]
 
 config :pleroma, :instance,
@@ -16,7 +16,7 @@ config :pleroma, :instance,
 config :pleroma, :media_proxy,
   enabled: false,
   redirect_on_failure: true,
-  base_url: "https://cache.domain.tld"
+  base_url: System.get_env("MEDIA_DOMAIN", "localhost")
 
 config :pleroma, Pleroma.Repo,
   adapter: Ecto.Adapters.Postgres,
