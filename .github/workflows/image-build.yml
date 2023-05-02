@@ -42,9 +42,10 @@ jobs:
           DB_NAME: ${{ secrets.DB_NAME }}
           DOMAIN: ${{ secrets.DOMAIN }}
           MEDIA_DOMAIN: ${{ secrets.MEDIA_DOMAIN }}
+          PLEROMA_VER: v2.5.1
           IMAGE_TAG: latest
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG  --build-arg PLEROMA_VER=$PLEROMA_VER \
           --build-arg DB_PASS=$DB_PASS --build-arg DB_HOST=$DB_HOST --build-arg DB_USER=$DB_USER --build-arg DB_NAME=DB_NAME \
           --build-arg UID=1000 --build-arg GID=1000 \
           .
