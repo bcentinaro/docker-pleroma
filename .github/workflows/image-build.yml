@@ -22,8 +22,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        with: 
-          path: pleroma
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -46,10 +44,8 @@ jobs:
           DOMAIN: ${{ secrets.DOMAIN }}
           MEDIA_DOMAIN: ${{ secrets.MEDIA_DOMAIN }}
           IMAGE_TAG: latest
-
-
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f ./pleroma/Dockerfile \
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
           --build-arg DB_PASS=$DB_PASS --build-arg DB_HOST=$DB_HOST --build-arg DB_USER=$DB_USER --build-arg DB_NAME=DB_NAME \
           --build-arg UID=1000 --build-arg GID=1000 \
           .
