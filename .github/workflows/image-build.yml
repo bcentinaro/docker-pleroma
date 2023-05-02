@@ -40,8 +40,6 @@ jobs:
           IMAGE_TAG: latest
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG  --build-arg PLEROMA_VER=$PLEROMA_VER \
-          --build-arg DB_PASS=$DB_PASS --build-arg DB_HOST=$DB_HOST --build-arg DB_USER=$DB_USER --build-arg DB_NAME=DB_NAME \
-          --build-arg AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY --build-arg AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
           --build-arg UID=1000 --build-arg GID=1000 \
           .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
